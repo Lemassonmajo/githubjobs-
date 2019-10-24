@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Input, Select, Button} from 'antd'
+import PropTypes from 'prop-types'
 import "antd/dist/antd.css"
 import './form.css'
 const { Option } = Select;
@@ -32,7 +33,7 @@ class Form extends Component {
     }
 
     submit = () => {
-        this.props.filterData(this.state)
+        this.props.filterData(this.state);
     }
     
     render() {
@@ -76,4 +77,6 @@ class Form extends Component {
 
 export default Form;
 
-
+Form.propTypes = {
+    filterData: PropTypes.func
+};

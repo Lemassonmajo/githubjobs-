@@ -67,7 +67,6 @@ class App extends Component {
   }
 
   filterData = (data) => {
-    console.log(data)
     this.setState({
       description : data.description,
       location : data.location,

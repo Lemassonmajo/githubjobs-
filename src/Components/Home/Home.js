@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import Form from '../Form/Form'
 import DataTable from '../DataTable/DataTable'
+import Header from '../Header/Header'
+import PropTypes from 'prop-types'
 import './home.css'
 
 class Home extends Component {
+    state ={
+        formSubmited : false
+    }
+
     render() {
         return (
             <div className="home">
-                <h1>GitHub Jobs</h1>
+                <Header/>
                 <div className="elementsContainer">
                     <Form
                         filterData={this.props.filterData}
@@ -23,3 +29,7 @@ class Home extends Component {
 }
 
 export default Home;
+
+Home.propTypes = {
+    data: PropTypes.array
+};

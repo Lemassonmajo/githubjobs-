@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
-import { Table } from 'antd';
+import React, { Component } from 'react'
+import { Table } from 'antd'
+import WorkView from '../WorkView/WorkView'
 import moment from 'moment'
+import PropTypes from 'prop-types'
+
 
 const columns = [
   {
@@ -71,7 +74,9 @@ const columns = [
 
 class DataTable extends Component {
   state = {
-    data: []
+    data : [],
+    workInfo : {},
+    workview : false
   };  
   
   componentDidUpdate(prevProps, prevState) {
@@ -79,7 +84,7 @@ class DataTable extends Component {
       let data = []
       this.props.data.forEach(element => {
         if (element.location !== undefined) {
-          data.push({key:element.id, company:element.company, company_logo:element.company_logo, created_at:moment(element.created_at).format('ll'), how_to_apply: element.how_to_apply, title:element.title, type:element.type, location:element.location} )
+          data.push({key:element.id, company:element.company, company_logo:element.company_logo, created_at:moment(element.created_at).format('ll'), how_to_apply: element.how_to_apply, title:element.title, type:element.type, location:element.location, description:element.description} )
         }
       });
       this.setState({
@@ -87,16 +92,51 @@ class DataTable extends Component {
       })
     }
   }
-  changeSelection (value){
-    console.log(value)
+  setSelectedRow = (value) => {
+    this.setState({
+      workInfo : value,
+      workview : true
+    })
   }
+
+  back = () => {
+    this.setState({
+      workview : false
+    })
+
+  }
+
     render() {
+      if (this.state.workview === false) {
         return (
             <div>
-                <Table columns={columns} dataSource={this.state.data} onChange={this.onChange} pagination={{ pageSize: 50 }} onRowClick={this.changeSelection()} />
+                <Table 
+                  columns={columns} 
+                  dataSource={this.state.data} 
+                  onChange={this.onChange} 
+                  pagination={{ pageSize: 50 }} 
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: () => { this.setSelectedRow(record) }
+                    }; 
+                  }}
+                />
             </div>
         );
+      }
+      else if (this.state.workview === true) {
+        return(
+          <WorkView
+            workInfo = {this.state.workInfo}
+            back = {this.back}
+          />
+        )
+      }
     }
 }
 
 export default DataTable;
+
+DataTable.propTypes = {
+  data: PropTypes.array
+};
